@@ -1,4 +1,6 @@
+import 'package:chat_app/screen/widget/chat_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -17,15 +19,25 @@ class Chat extends StatelessWidget {
           );
         }
         final chat = snap.data.documents;
+        final user = FirebaseAuth.instance.currentUser;
         return chat.length <= 0
             ? Text('data')
-            : ListView.builder(
-                reverse: true,
-                itemBuilder: (ct, i) {
-                  return Text(chat[i]['text']);
-                },
-                itemCount: chat.length,
-              );
+            : FutureBuilder(builder: (ctx, snapShot) {
+                if (snapShot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+
+                return ListView.builder(
+                  reverse: true,
+                  itemBuilder: (ct, i) {
+                    return ChatWidget(chat[i]['text'],
+                        chat[i]["userId"] == user.uid ? true : false);
+                  },
+                  itemCount: chat.length,
+                );
+              });
       },
     );
   }

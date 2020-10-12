@@ -45,29 +45,31 @@ class ChatScreen extends StatelessWidget {
               children: [
                 Expanded(child: Chat()),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.only(left: 30, bottom: 10),
                   child: Row(
                     children: [
                       Container(
                         height: 50,
-                        width: MediaQuery.of(context).size.width * 0.75,
+                        width: MediaQuery.of(context).size.width * 0.70,
                         child: TextField(
                           controller: textEditingController,
                         ),
                       ),
-                      RaisedButton(
+                      FlatButton(
                         onPressed: () {
                           // FocusScope.of(context).unfocus();
+                          var user = FirebaseAuth.instance.currentUser;
 
                           Firestore.instance.collection('chat').add({
                             "text": textEditingController.text,
-                            "createdAt": Timestamp.now()
+                            "createdAt": Timestamp.now(),
+                            "userId": user.uid
                           }).then((value) {
                             textEditingController.clear();
                           });
                         },
-                        child: Text("sent"),
-                        color: Colors.amber,
+                        child: Icon(Icons.send),
+                        color: Colors.transparent,
                       )
                     ],
                   ),
