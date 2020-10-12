@@ -57,9 +57,14 @@ class ChatScreen extends StatelessWidget {
                       ),
                       RaisedButton(
                         onPressed: () {
-                          Firestore.instance
-                              .collection('chat/JK49LNlDzy5IqhRhn6gm/messages')
-                              .add({"text": textEditingController.text});
+                          // FocusScope.of(context).unfocus();
+
+                          Firestore.instance.collection('chat').add({
+                            "text": textEditingController.text,
+                            "createdAt": Timestamp.now()
+                          }).then((value) {
+                            textEditingController.clear();
+                          });
                         },
                         child: Text("sent"),
                         color: Colors.amber,
