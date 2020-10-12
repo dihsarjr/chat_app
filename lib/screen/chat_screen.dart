@@ -1,3 +1,4 @@
+import 'package:chat_app/screen/widget/chat.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -42,19 +43,7 @@ class ChatScreen extends StatelessWidget {
           builder: (ctx, streamSnapShot) {
             return Column(
               children: [
-                Expanded(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemBuilder: (ctx, i) => Container(
-                      padding: EdgeInsets.all(10),
-                      child: Text(
-                        streamSnapShot.data.documents[i]['text'],
-                        style: TextStyle(fontSize: 25),
-                      ),
-                    ),
-                    itemCount: streamSnapShot.data.documents.length,
-                  ),
-                ),
+                Expanded(child: Chat()),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
