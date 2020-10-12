@@ -2,13 +2,14 @@ import 'package:chat_app/screen/auth_screen.dart';
 import 'package:flutter/material.dart';
 
 class AuthForm extends StatefulWidget {
+  bool load;
   final void Function(
     String email,
     String userName,
     String password,
     bool islogin,
   ) submit;
-  AuthForm(this.submit);
+  AuthForm(this.submit, this.load);
   @override
   _AuthFormState createState() => _AuthFormState();
 }
@@ -93,18 +94,20 @@ class _AuthFormState extends State<AuthForm> {
                       SizedBox(
                         height: 15,
                       ),
-                      RaisedButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        color: Colors.redAccent,
-                        onPressed: () {
-                          _trySubmit();
-                        },
-                        child: Text(
-                          _isLogin ? "Login" : "Signup",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
+                      widget.load == true
+                          ? CircularProgressIndicator()
+                          : RaisedButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                              color: Colors.redAccent,
+                              onPressed: () {
+                                _trySubmit();
+                              },
+                              child: Text(
+                                _isLogin ? "Login" : "Signup",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
                       FlatButton(
                           onPressed: () {
                             setState(() {
